@@ -181,6 +181,9 @@ async function runTask(
         isScheduledTask: true,
         assistantName: ASSISTANT_NAME,
         script: task.script || undefined,
+        ...(group.containerConfig?.model && {
+          model: group.containerConfig.model,
+        }),
       },
       (proc, containerName) =>
         deps.onProcess(task.chat_jid, proc, containerName, task.group_folder),

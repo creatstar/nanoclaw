@@ -29,9 +29,7 @@ const FALLBACK_MESSAGE = '[Voice Message - transcription unavailable]';
  * Transcribe audio via Groq API (whisper-large-v3-turbo).
  * Returns transcript or null on failure.
  */
-async function transcribeWithGroq(
-  audioBuffer: Buffer,
-): Promise<string | null> {
+async function transcribeWithGroq(audioBuffer: Buffer): Promise<string | null> {
   try {
     const blob = new Blob([audioBuffer], { type: 'audio/ogg' });
     const form = new FormData();
@@ -88,16 +86,7 @@ async function transcribeWithWhisperCppLocal(
 
     const { stdout } = await execFileAsync(
       WHISPER_BIN,
-      [
-        '-m',
-        WHISPER_MODEL,
-        '-f',
-        tmpWav,
-        '-l',
-        'zh',
-        '--no-timestamps',
-        '-nt',
-      ],
+      ['-m', WHISPER_MODEL, '-f', tmpWav, '-l', 'zh', '--no-timestamps', '-nt'],
       { timeout: 120_000 },
     );
 
@@ -166,10 +155,7 @@ export async function transcribeAudioMessage(
       return FALLBACK_MESSAGE;
     }
 
-    logger.info(
-      { bytes: buffer.length },
-      'Downloaded audio message',
-    );
+    logger.info({ bytes: buffer.length }, 'Downloaded audio message');
 
     const transcript = await transcribeWithWhisperCpp(buffer);
 

@@ -378,6 +378,9 @@ async function runAgent(
         isMain,
         assistantName: ASSISTANT_NAME,
         ...(imageAttachments.length > 0 && { imageAttachments }),
+        ...(group.containerConfig?.model && {
+          model: group.containerConfig.model,
+        }),
       },
       (proc, containerName) =>
         queue.registerProcess(chatJid, proc, containerName, group.folder),
@@ -409,6 +412,9 @@ async function runAgent(
             chatJid,
             isMain,
             assistantName: ASSISTANT_NAME,
+            ...(group.containerConfig?.model && {
+              model: group.containerConfig.model,
+            }),
           },
           (proc, containerName) =>
             queue.registerProcess(chatJid, proc, containerName, group.folder),
